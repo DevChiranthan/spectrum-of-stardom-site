@@ -1,5 +1,50 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
+import { useRef } from 'react';
+import * as THREE from 'three';
+
+function ConcentricCircles() {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.z = state.clock.getElapsedTime() * 0.5;
+      groupRef.current.children.forEach((child, index) => {
+        child.rotation.z = state.clock.getElapsedTime() * (0.3 + index * 0.1) * (index % 2 === 0 ? 1 : -1);
+      });
+    }
+  });
+
+  const circles = [1.2, 1.6, 2.0, 2.4, 2.8];
+
+  return (
+    <group ref={groupRef}>
+      {circles.map((radius, index) => (
+        <mesh key={index} rotation={[0, 0, 0]}>
+          <torusGeometry args={[radius, 0.08, 16, 100]} />
+          <meshStandardMaterial
+            color={index % 2 === 0 ? '#ff1493' : '#00ffff'}
+            emissive={index % 2 === 0 ? '#ff1493' : '#00ffff'}
+            emissiveIntensity={0.5}
+            transparent
+            opacity={0.8}
+          />
+        </mesh>
+      ))}
+      {/* Central glowing sphere */}
+      <mesh>
+        <sphereGeometry args={[0.3, 32, 32]} />
+        <meshStandardMaterial
+          color="#ffffff"
+          emissive="#ffffff"
+          emissiveIntensity={1}
+        />
+      </mesh>
+    </group>
+  );
+}
 
 export const LoadingAnimation = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -7,7 +52,7 @@ export const LoadingAnimation = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -22,57 +67,21 @@ export const LoadingAnimation = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="relative">
-        {/* Central star */}
-        <motion.div
-          className="w-16 h-16 rounded-full cosmic-glow"
-          style={{
-            background: 'radial-gradient(circle, hsl(var(--primary)), hsl(var(--secondary)))',
-          }}
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        
-        {/* Orbiting particles */}
-        {[0, 1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            className="absolute w-3 h-3 rounded-full"
-            style={{
-              background: i % 2 === 0 ? 'hsl(var(--accent))' : 'hsl(var(--secondary))',
-              top: '50%',
-              left: '50%',
-            }}
-            animate={{
-              x: [0, Math.cos(i * Math.PI / 2) * 50],
-              y: [0, Math.sin(i * Math.PI / 2) * 50],
-              scale: [1, 1.5, 1],
-              opacity: [1, 0.5, 1],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "linear",
-              delay: i * 0.2,
-            }}
-          />
-        ))}
-        
-        <motion.p
-          className="text-foreground text-xl font-bold mt-12 text-center text-gradient-aurora"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          RANVITA 2026
-        </motion.p>
+      <div className="w-full h-full">
+        <Canvas camera={{ position: [0, 0, 6], fov: 75 }}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1} />
+          <ConcentricCircles />
+        </Canvas>
       </div>
+      
+      <motion.p
+        className="absolute bottom-20 text-foreground text-xl font-bold text-gradient-aurora"
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+      >
+        RANVITA 2026
+      </motion.p>
     </motion.div>
   );
 };

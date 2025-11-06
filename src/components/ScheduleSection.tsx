@@ -1,7 +1,31 @@
 import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Calendar, Clock } from 'lucide-react';
+
+const tableVariants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+};
+
+const rowVariants = {
+  hidden: { opacity: 0, x: -30 },
+  show: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  }),
+};
 
 const day1Schedule = [
   { time: "8:00 AM", event: "Registration", venue: "Main Entrance" },
@@ -28,8 +52,6 @@ const day2Schedule = [
 ];
 
 export const ScheduleSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [activeDay, setActiveDay] = useState<'day1' | 'day2'>('day1');
 
   const schedule = activeDay === 'day1' ? day1Schedule : day2Schedule;
@@ -37,20 +59,27 @@ export const ScheduleSection = () => {
   const dayColor = activeDay === 'day1' ? 'primary' : 'accent';
 
   return (
-    <section ref={ref} className="py-20 px-4 relative">
+    <section className="py-20 px-4 relative">
       <div className="container mx-auto max-w-6xl">
         <motion.h2 
           className="text-5xl md:text-6xl font-bold mb-12 text-center text-gradient-cosmic"
           style={{ fontFamily: "'Cinzel', serif" }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 50, rotateX: -20 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
         >
           Event Schedule
         </motion.h2>
         
         {/* Day Toggle */}
-        <div className="flex justify-center gap-4 mb-12">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex justify-center gap-4 mb-12"
+        >
           <motion.button
             onClick={() => setActiveDay('day1')}
             className={`px-8 py-4 rounded-full text-lg font-bold transition-all ${
@@ -75,14 +104,15 @@ export const ScheduleSection = () => {
           >
             Day 2: Supernova
           </motion.button>
-        </div>
+        </motion.div>
 
         {/* Schedule Display */}
         <motion.div
+          variants={tableVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
           key={activeDay}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
           className="bg-card/50 backdrop-blur-md rounded-3xl p-8 border border-border"
         >
           <h3 className={`text-3xl font-bold mb-8 text-center text-${dayColor}`}>
@@ -93,9 +123,11 @@ export const ScheduleSection = () => {
             {schedule.map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
+                custom={index}
+                variants={rowVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
                 className="flex items-center gap-4 p-4 bg-background/30 rounded-xl hover:bg-background/50 transition-all"
               >
                 <Clock className={`w-5 h-5 text-${dayColor}`} />
