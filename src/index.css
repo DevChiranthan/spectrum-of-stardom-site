@@ -132,6 +132,14 @@ All colors MUST be HSL.
     letter-spacing: -0.02em;
   }
 
+  /* Hero font - unique, futuristic */
+  .hero-font {
+    font-family: 'Orbitron', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 900;
+  }
+
   /* Large faint outline background used in hero for subtle typographic texture */
   .hero-outline {
     color: transparent;
