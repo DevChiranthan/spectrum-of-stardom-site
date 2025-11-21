@@ -1,4 +1,3 @@
-import { LoadingAnimation } from '@/components/LoadingAnimation';
 import { WarpTransition } from '@/components/WarpTransition';
 import { CosmicCursor } from '@/components/CosmicCursor';
 import { CosmicBackground } from '@/components/CosmicBackground';
@@ -12,7 +11,6 @@ import { FloatingRegister } from '@/components/FloatingRegister';
 const Index = () => {
   return (
     <div className="relative min-h-screen">
-      <LoadingAnimation />
       <WarpTransition />
       <CosmicCursor />
       <CosmicBackground />

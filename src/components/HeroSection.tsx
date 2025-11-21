@@ -100,6 +100,13 @@ export const HeroSection = () => {
       ref={containerRef}
       className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-20"
     >
+      {/* Large faint outlined background text for style */}
+      <div className="absolute inset-0 flex items-center justify-center -z-20 pointer-events-none">
+        <div className="text-center">
+          <div className="hero-outline font-extrabold text-[28vw] md:text-[18vw] leading-none">RANVITA</div>
+          <div className="hero-outline font-extrabold text-[48vw] md:text-[30vw] leading-none mt-[-8vw]">2026</div>
+        </div>
+      </div>
       {/* 3D Background Elements */}
       <div className="absolute inset-0 opacity-30">
         <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
@@ -111,7 +118,7 @@ export const HeroSection = () => {
       </div>
 
       <div className="container mx-auto text-center relative z-10">
-        <motion.div
+          <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 3.5 }}
@@ -122,26 +129,12 @@ export const HeroSection = () => {
           }}
         >
           {/* Video-Masked Text */}
-          <div className="relative inline-block">
+          <div className="relative inline-block z-10">
             <motion.h1 
-              className="text-[12vw] md:text-[15vw] font-black leading-none tracking-tighter"
-              style={{ 
-                fontFamily: "'Cinzel', serif",
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundImage: 'url(data:image/svg+xml,%3Csvg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg"%3E%3Cdefs%3E%3ClinearGradient id="grad" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%23ff1493;stop-opacity:1"%3E%3Canimate attributeName="stop-color" values="%23ff1493;%2300ffff;%23ff1493" dur="4s" repeatCount="indefinite"/%3E%3C/stop%3E%3Cstop offset="50%25" style="stop-color:%2300ffff;stop-opacity:1"%3E%3Canimate attributeName="stop-color" values="%2300ffff;%23ffff00;%2300ffff" dur="4s" repeatCount="indefinite"/%3E%3C/stop%3E%3Cstop offset="100%25" style="stop-color:%23ffff00;stop-opacity:1"%3E%3Canimate attributeName="stop-color" values="%23ffff00;%23ff1493;%23ffff00" dur="4s" repeatCount="indefinite"/%3E%3C/stop%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width="1920" height="1080" fill="url(%23grad)"/%3E%3C/svg%3E)',
-                backgroundSize: '200% 200%',
-                animation: 'shimmer 4s ease-in-out infinite',
-                filter: 'drop-shadow(0 0 30px rgba(255, 20, 147, 0.6)) drop-shadow(0 0 60px rgba(0, 255, 255, 0.4))',
-              }}
-              animate={{
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'linear',
+              className="title-font text-gradient-aurora text-[12vw] md:text-[15vw] font-extrabold leading-none tracking-tight"
+              style={{
+                filter: 'drop-shadow(0 0 18px rgba(0,0,0,0.35)) drop-shadow(0 6px 30px rgba(0,0,0,0.25))',
+                WebkitFontSmoothing: 'antialiased',
               }}
             >
               RANVITA
@@ -175,8 +168,8 @@ export const HeroSection = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 4 }}
           >
-            <p className="text-lg md:text-xl text-foreground/90 font-light tracking-wide">
-              Step into the <span className="text-primary font-semibold">Spectrum of Stardom</span>, where brilliance knows no bounds!
+            <p className="text-lg md:text-xl text-foreground/90 font-medium tracking-wide">
+              Organised by <span className="text-primary font-semibold">CMR University</span> — an <span className="text-secondary font-semibold">Inter‑University Fest</span> celebrating talent, creativity and competitive spirit across campuses.
             </p>
           </motion.div>
           
