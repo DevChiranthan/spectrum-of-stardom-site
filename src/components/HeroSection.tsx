@@ -122,7 +122,7 @@ export const HeroSection = () => {
           </Canvas>
         </div>
 
-        <div className="container mx-auto text-center relative z-10">
+        <div className="container mx-auto text-center relative z-10 px-2 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -135,8 +135,45 @@ export const HeroSection = () => {
           >
             {/* Main Title with unique font */}
             <div className="relative inline-block z-10">
+              {/* Cosmic backdrop that hugs the title */}
+              <motion.div
+                className="absolute -inset-x-24 -inset-y-12 sm:-inset-x-32 sm:-inset-y-16 rounded-[40%] blur-3xl opacity-70 pointer-events-none"
+                style={{
+                  background:
+                    'radial-gradient(circle at 30% 30%, rgba(255,20,147,0.6), transparent 60%), radial-gradient(circle at 70% 70%, rgba(0,255,255,0.45), transparent 55%)',
+                  mixBlendMode: 'screen',
+                }}
+                animate={{
+                  scale: [0.9, 1.05, 0.95, 1.02],
+                  rotate: [0, 8, -6, 0],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
+              {/* Masked aurora sweep */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    'linear-gradient(120deg, rgba(255,20,147,0.35), rgba(0,255,255,0.25), rgba(255,255,255,0.2))',
+                  maskImage: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.95), transparent 70%)',
+                  WebkitMaskImage: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.95), transparent 70%)',
+                }}
+                animate={{
+                  opacity: [0.3, 0.6, 0.4],
+                  x: [-10, 10, -5],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
               <motion.h1 
-                className="hero-font text-gradient-aurora text-[18vw] sm:text-[14vw] md:text-[10vw] lg:text-[8vw] leading-none"
+                className="hero-font text-gradient-aurora text-[16vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] leading-tight sm:leading-none"
                 style={{
                   filter: 'drop-shadow(0 0 20px rgba(255, 20, 147, 0.6)) drop-shadow(0 0 40px rgba(0, 255, 255, 0.4))',
                   WebkitFontSmoothing: 'antialiased',
@@ -144,7 +181,7 @@ export const HeroSection = () => {
               >
                 RANVITA
                 <br />
-                <span className="text-[22vw] sm:text-[18vw] md:text-[14vw] lg:text-[11vw]">2026</span>
+                <span className="text-[20vw] sm:text-[16vw] md:text-[12.5vw] lg:text-[10vw]">2026</span>
               </motion.h1>
 
               {/* Animated glow layers */}
@@ -168,12 +205,12 @@ export const HeroSection = () => {
             </div>
 
             <motion.div 
-              className="max-w-3xl mx-auto mt-8 sm:mt-12 md:mt-16 space-y-4 px-4"
+              className="max-w-2xl sm:max-w-3xl mx-auto mt-6 sm:mt-12 md:mt-16 space-y-4 px-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 4 }}
             >
-              <p className="text-sm sm:text-base md:text-lg text-foreground/90 font-light tracking-wide">
+              <p className="text-base sm:text-lg text-foreground/90 font-light tracking-wide">
                 Organised by <span className="text-primary font-semibold">CMR University</span> — an <span className="text-secondary font-semibold">Inter‑University Fest</span> celebrating talent, creativity and competitive spirit across campuses.
               </p>
             </motion.div>
@@ -188,7 +225,7 @@ export const HeroSection = () => {
                 onClick={() => {
                   document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-8 sm:px-10 md:px-12 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl font-bold rounded-full cosmic-glow bg-card border-2 border-primary hover:bg-primary/20 transition-all"
+                className="px-8 sm:px-10 md:px-12 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg md:text-xl font-bold rounded-full cosmic-glow bg-card border-2 border-primary hover:bg-primary/20 transition-all shadow-[0_25px_60px_rgba(255,20,147,0.25)]"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -198,98 +235,6 @@ export const HeroSection = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Video Showcase Section */}
-      <motion.div 
-        className="relative py-16 sm:py-24 md:py-32 px-4"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ once: true }}
-      >
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 sm:mb-12 md:mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-aurora mb-3 sm:mb-4">
-              Relive the Magic
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-              Experience the spectacular moments from Ranvita's previous edition
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotateY: 0 }}
-            whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            viewport={{ once: true }}
-            className="max-w-sm sm:max-w-md mx-auto"
-            style={{ transformStyle: 'preserve-3d' }}
-          >
-            <div className="relative group">
-              {/* Video container with cosmic frame */}
-              <div className="relative aspect-[9/16] rounded-2xl sm:rounded-3xl overflow-hidden border-2 sm:border-4 border-primary/30 cosmic-glow">
-                <video 
-                  className="w-full h-full object-cover"
-                  controls
-                  playsInline
-                  preload="metadata"
-                  poster="/placeholder.svg"
-                >
-                  <source src="/path-to-your-video.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Overlay gradient on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              </div>
-
-              {/* Floating decorative elements - Hidden on mobile */}
-              <motion.div
-                className="hidden sm:block absolute -top-6 -right-6 w-24 h-24 rounded-full bg-primary/20 blur-2xl"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              <motion.div
-                className="hidden sm:block absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-secondary/20 blur-2xl"
-                animate={{
-                  scale: [1.2, 1, 1.2],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1.5,
-                }}
-              />
-            </div>
-          </motion.div>
-
-          {/* Additional decorative text */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            viewport={{ once: true }}
-            className="text-center mt-8 sm:mt-10 md:mt-12 text-xs sm:text-sm text-muted-foreground italic px-4"
-          >
-            Replace the video source with your Ranvita video file
-          </motion.p>
-        </div>
-      </motion.div>
     </section>
   );
 };

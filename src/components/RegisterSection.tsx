@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Rocket } from 'lucide-react';
+import { Rocket, ArrowUpRight } from 'lucide-react';
 
 export const RegisterSection = () => {
   const ref = useRef(null);
@@ -61,6 +61,17 @@ export const RegisterSection = () => {
               <p className="text-sm sm:text-base text-muted-foreground">
                 (Tally form will be embedded here)
               </p>
+              <motion.a
+                href="https://rapid.grayquest.com/cmru-reg-master"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold text-secondary hover:text-primary transition-colors underline underline-offset-4 decoration-dotted"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Open registration portal
+                <ArrowUpRight className="h-4 w-4" />
+              </motion.a>
             </div>
           </div>
         </motion.div>
