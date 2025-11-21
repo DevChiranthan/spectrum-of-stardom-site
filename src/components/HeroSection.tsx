@@ -14,10 +14,12 @@ export const HeroSection = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    // Changed min-h-screen to min-h-[100svh] to fix mobile address bar jump
+    <section ref={ref} className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-20">
       {/* Dynamic Starfield Background (Lightweight) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <Canvas>
+        {/* Capped dpr for mobile performance */}
+        <Canvas dpr={[1, 1.5]}>
           <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
         </Canvas>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
@@ -32,7 +34,7 @@ export const HeroSection = () => {
 
       <motion.div 
         style={{ y, opacity }}
-        className="container relative z-10 px-4 text-center"
+        className="container relative z-10 px-4 text-center will-change-transform"
       >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}

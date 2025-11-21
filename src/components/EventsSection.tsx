@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Sparkles, Music, Mic, Palette, Drama, Gamepad2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -10,7 +10,7 @@ import * as THREE from 'three';
 // --- 3D Background Component ---
 function FloatingParticles() {
   const ref = useRef<THREE.Points>(null!);
-  const particleCount = 300;
+  const particleCount = 200; 
   const positions = new Float32Array(particleCount * 3);
   
   for (let i = 0; i < particleCount; i++) {
@@ -55,7 +55,7 @@ function FloatingRing() {
 // --- Event Data ---
 const eventClusters = [
   {
-    id: 'dance', // Ensure this ID matches the TabsTrigger value
+    id: 'dance', 
     label: 'Dance',
     icon: Sparkles,
     tagline: 'Rhythm & Movement',
@@ -116,7 +116,13 @@ const eventClusters = [
   },
 ];
 
-const chunkEvents = (items: any[], size: number) => {
+// Type Definition added to fix implicit 'any'
+type EventItem = {
+  name: string;
+  tag: string;
+};
+
+const chunkEvents = (items: EventItem[], size: number) => {
   const chunks = [];
   for (let i = 0; i < items.length; i += size) {
     chunks.push(items.slice(i, i + size));
@@ -125,13 +131,13 @@ const chunkEvents = (items: any[], size: number) => {
 };
 
 export const EventsSection = () => {
-  const [activeCluster, setActiveCluster] = useState("dance"); // Explicit string initial state
+  const [activeCluster, setActiveCluster] = useState("dance");
 
   return (
     <section className="py-24 px-4 relative z-10 overflow-hidden bg-black/20">
-      {/* 3D Background Layer */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <Canvas camera={{ position: [0, 0, 5] }} dpr={[1, 1.5]}>
+      {/* 3D Background Layer - Optimized for Mobile */}
+      <div className="absolute inset-0 pointer-events-none -z-10 h-full w-full">
+        <Canvas camera={{ position: [0, 0, 5] }} dpr={[1, 1]} gl={{ antialias: false }}>
           <ambientLight intensity={0.5} />
           <FloatingParticles />
           <FloatingRing />
@@ -173,7 +179,7 @@ export const EventsSection = () => {
             </TabsList>
           </div>
 
-          {/* Content Area - Explicit rendering check */}
+          {/* Content Area */}
           <div className="w-full mt-8 relative min-h-[450px]"> 
             {eventClusters.map((cluster) => (
               <TabsContent 
@@ -186,7 +192,7 @@ export const EventsSection = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -20 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className={`rounded-[2rem] border border-white/10 bg-gradient-to-br ${cluster.gradient} p-6 sm:p-10 relative overflow-hidden shadow-2xl backdrop-blur-md`}
+                  className={`rounded-[2rem] border border-white/10 bg-gradient-to-br ${cluster.gradient} p-6 sm:p-10 relative overflow-hidden shadow-2xl backdrop-blur-md transform-gpu`}
                 >
                   {/* Inner texture */}
                   <div className="absolute inset-0 opacity-[0.03] bg-white pointer-events-none mix-blend-overlay" />

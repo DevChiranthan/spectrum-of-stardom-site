@@ -10,7 +10,8 @@ const getInitialPosition = () =>
 
 export const CosmicCursor = () => {
   const [isActive, setIsActive] = useState(false);
-  const [inputMode, setInputMode] = useState<'mouse' | 'touch'>('mouse');
+  // Initialize based on capability to avoid hydration mismatch, but assume mouse first
+  const [isTouchDevice, setIsTouchDevice] = useState(false); 
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
   const timeoutRef = useRef<number>();
@@ -18,8 +19,9 @@ export const CosmicCursor = () => {
 
   const x = useMotionValue(pos.current.x);
   const y = useMotionValue(pos.current.y);
-  const smoothX = useSpring(x, { mass: 0.2, damping: 20, stiffness: 120 });
-  const smoothY = useSpring(y, { mass: 0.2, damping: 20, stiffness: 120 });
+  // Reduced stiffness slightly for better performance on lower-end devices
+  const smoothX = useSpring(x, { mass: 0.2, damping: 20, stiffness: 100 });
+  const smoothY = useSpring(y, { mass: 0.2, damping: 20, stiffness: 100 });
 
   const scheduleIdle = () => {
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
@@ -30,6 +32,7 @@ export const CosmicCursor = () => {
     pos.current = { x: clientX, y: clientY };
     x.set(clientX);
     y.set(clientY);
+    // Limit trail updates to prevent memory churn
     setTrail((prev) => [...prev.slice(-4), { x: clientX, y: clientY, id: Date.now() }]);
     setIsActive(true);
     scheduleIdle();
@@ -37,27 +40,29 @@ export const CosmicCursor = () => {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handle = () => setPrefersReducedMotion(mq.matches);
-    handle();
-    mq.addEventListener('change', handle);
-    return () => mq.removeEventListener('change', handle);
-  }, []);
-
-  useEffect(() => {
-    const detectInput = () => {
-      if (typeof window === 'undefined') return;
-      const isCoarse = window.matchMedia('(pointer: coarse)').matches;
-      setInputMode(isCoarse ? 'touch' : 'mouse');
+    
+    // Robust touch detection
+    const checkDevice = () => {
+      const isTouch = window.matchMedia('(pointer: coarse)').matches || 
+                     ('ontouchstart' in window) || 
+                     (navigator.maxTouchPoints > 0);
+      setIsTouchDevice(isTouch);
+      
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(mq.matches);
     };
-    detectInput();
-    window.addEventListener('resize', detectInput);
-    return () => window.removeEventListener('resize', detectInput);
+    
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
   }, []);
 
   useEffect(() => {
+    // Immediately exit if on touch device to save event listener cost
+    if (isTouchDevice ||prefersReducedMotion) return;
+
     const handlePointerMove = (e: PointerEvent) => {
-      if (inputMode === 'touch' && e.pointerType !== 'touch') return;
+      if (e.pointerType === 'touch') return;
       updatePosition(e.clientX, e.clientY);
     };
 
@@ -76,9 +81,9 @@ export const CosmicCursor = () => {
       window.removeEventListener('scroll', handleScroll);
       if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
     };
-  }, [inputMode, isActive]);
+  }, [isTouchDevice, prefersReducedMotion, isActive]);
 
-  if (inputMode === 'touch' || prefersReducedMotion) {
+  if (isTouchDevice || prefersReducedMotion) {
     return null;
   }
 

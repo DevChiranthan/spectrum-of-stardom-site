@@ -75,7 +75,14 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground overflow-x-hidden;
-    cursor: none; /* Custom cursor is active */
+  }
+
+  /* Only hide cursor on devices that support hover (Desktop) 
+     This prevents mobile tap weirdness and flickering */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      cursor: none;
+    }
   }
 
   /* Custom Scrollbar */

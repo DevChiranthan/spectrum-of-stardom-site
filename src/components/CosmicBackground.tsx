@@ -6,8 +6,8 @@ import * as THREE from 'three';
 function StarField() {
   const ref = useRef<THREE.Points>(null!);
   
-  // REDUCED COUNT FROM 2000 TO 700 FOR PERFORMANCE
-  const particlesCount = 700; 
+  // Optimized particle count for sustained mobile performance
+  const particlesCount = 600; 
   const positions = new Float32Array(particlesCount * 3);
   
   for (let i = 0; i < particlesCount; i++) {
@@ -40,7 +40,7 @@ function StarField() {
 
 export const CosmicBackground = () => {
   return (
-    <div className="fixed inset-0 -z-10 bg-[#050508]"> {/* Added base color to prevent white flashes */}
+    <div className="fixed inset-0 -z-10 bg-[#050508] pointer-events-none"> {/* Added base color to prevent white flashes */}
       <Canvas camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 1.5]}> {/* Cap DPR for mobile */}
         <ambientLight intensity={0.5} />
         <StarField />
