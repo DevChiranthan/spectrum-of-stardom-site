@@ -47,7 +47,7 @@ export const RegisterSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="bg-card/50 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 lg:p-12 border-2 border-primary aurora-glow"
+          className="bg-card/50 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 lg:p-12 border-2 border-primary aurora-glow max-w-xl mx-auto"
         >
           <div className="aspect-[4/3] sm:aspect-video rounded-2xl sm:rounded-3xl relative overflow-hidden border border-primary/40 bg-gradient-to-br from-primary/10 via-background/20 to-secondary/10">
             <motion.div
@@ -103,7 +103,16 @@ export const RegisterSection = () => {
           className="mt-8 sm:mt-10 md:mt-12 text-center space-y-3 sm:space-y-4 px-4"
         >
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
-            For queries, contact us at <a href="mailto:ranvita@cmr.edu.in" className="text-primary hover:text-secondary transition-colors underline">ranvita@cmr.edu.in</a>
+            Follow us on{' '}
+            <a
+              href="https://www.instagram.com/ranvita.cmru?igsh=NzV2dWd4ZGg2NDV5"
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary hover:text-secondary transition-colors underline"
+            >
+              @ranvita.cmru
+            </a>{' '}
+            for live updates and drop-ins.
           </p>
           <p className="text-xs sm:text-sm text-muted-foreground">
             Limited slots available. Register early to secure your spot!

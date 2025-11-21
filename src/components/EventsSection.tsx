@@ -98,12 +98,12 @@ export const EventsSection = () => {
         </motion.div>
 
         <Tabs value={activeCluster} onValueChange={setActiveCluster} className="space-y-6">
-          <TabsList className="flex flex-wrap justify-between gap-2 bg-transparent p-0 w-full">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-transparent p-0 w-full max-w-2xl mx-auto">
             {eventClusters.map((cluster) => (
               <TabsTrigger
                 key={cluster.id}
                 value={cluster.id}
-                className="rounded-full border border-border/70 px-3 py-2 text-xs sm:text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all flex-1 min-w-[calc(50%-0.5rem)] sm:min-w-0 sm:flex-none"
+                className="rounded-full border border-border/70 px-3 py-2 text-xs sm:text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all w-full"
               >
                 {cluster.label}
               </TabsTrigger>

@@ -114,7 +114,7 @@ export const HeroSection = () => {
 
         {/* 3D Background Elements */}
         <div className="absolute inset-0 opacity-10 sm:opacity-30 pointer-events-none">
-          <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
+          <Canvas camera={{ position: [0, 0, 8], fov: 75 }} dpr={[1, 1.5]}>
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <OrbitingRing />

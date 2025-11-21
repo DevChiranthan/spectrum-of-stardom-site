@@ -36,10 +36,8 @@ export const VideoSection = () => {
               <video
                 className="w-full h-full object-cover"
                 playsInline
-                autoPlay
-                muted
-                loop
                 controls
+                preload="metadata"
                 poster="/media/ranvita-poster.jpg"
               >
                 <source src="/media/ranvita-highlight.mp4" type="video/mp4" />
