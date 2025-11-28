@@ -1,56 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Music, Mic, Palette, Drama, Gamepad2 } from 'lucide-react';
+import { Sparkles, Music, Mic, Palette, Drama } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
-
-// --- 3D Background Component ---
-function FloatingParticles() {
-  const ref = useRef<THREE.Points>(null!);
-  const particleCount = 200; 
-  const positions = new Float32Array(particleCount * 3);
-  
-  for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-  }
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.05;
-      ref.current.rotation.x = state.clock.getElapsedTime() * 0.02;
-    }
-  });
-
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={particleCount} array={positions} itemSize={3} />
-      </bufferGeometry>
-      <pointsMaterial size={0.05} color="#ff1493" transparent opacity={0.4} sizeAttenuation blending={THREE.AdditiveBlending} />
-    </points>
-  );
-}
-
-function FloatingRing() {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.1;
-    }
-  });
-  return (
-    <mesh ref={ref} position={[3, 0, -5]}>
-      <torusGeometry args={[3, 0.02, 16, 100]} />
-      <meshStandardMaterial color="#00ffff" emissive="#00ffff" emissiveIntensity={0.5} transparent opacity={0.3} />
-    </mesh>
-  );
-}
 
 // --- Event Data ---
 const eventClusters = [
@@ -116,7 +69,6 @@ const eventClusters = [
   },
 ];
 
-// Type Definition added to fix implicit 'any'
 type EventItem = {
   name: string;
   tag: string;
@@ -135,17 +87,22 @@ export const EventsSection = () => {
 
   return (
     <section className="py-24 px-4 relative z-10 overflow-hidden bg-black/20">
-      {/* 3D Background Layer - Optimized for Mobile */}
-      <div className="absolute inset-0 pointer-events-none -z-10 h-full w-full">
-        <Canvas camera={{ position: [0, 0, 5] }} dpr={[1, 1]} gl={{ antialias: false }}>
-          <ambientLight intensity={0.5} />
-          <FloatingParticles />
-          <FloatingRing />
-        </Canvas>
+      
+      {/* Replaced 3D Canvas with High-Performance CSS Cyber Ring */}
+      <div className="absolute top-0 right-[-10%] w-[50vh] h-[50vh] opacity-30 pointer-events-none">
+        <motion.div 
+          className="w-full h-full rounded-full border-2 border-cyan-500/30 border-dashed"
+          animate={{ rotate: 360, rotateX: 60, rotateY: 30 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div 
+          className="absolute inset-0 w-full h-full rounded-full border border-pink-500/20"
+          animate={{ rotate: -360, rotateX: 60, rotateY: 30, scale: [0.8, 1, 0.8] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        />
       </div>
 
       <div className="container mx-auto max-w-7xl relative z-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -163,7 +120,6 @@ export const EventsSection = () => {
           onValueChange={setActiveCluster} 
           className="w-full flex flex-col items-center"
         >
-          {/* Tabs Scroll Container */}
           <div className="w-full overflow-x-auto pb-4 no-scrollbar mask-linear-fade px-4">
             <TabsList className="inline-flex h-auto p-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl min-w-max mx-auto">
               {eventClusters.map((cluster) => (
@@ -179,7 +135,6 @@ export const EventsSection = () => {
             </TabsList>
           </div>
 
-          {/* Content Area */}
           <div className="w-full mt-8 relative min-h-[450px]"> 
             {eventClusters.map((cluster) => (
               <TabsContent 
@@ -194,7 +149,6 @@ export const EventsSection = () => {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className={`rounded-[2rem] border border-white/10 bg-gradient-to-br ${cluster.gradient} p-6 sm:p-10 relative overflow-hidden shadow-2xl backdrop-blur-md transform-gpu`}
                 >
-                  {/* Inner texture */}
                   <div className="absolute inset-0 opacity-[0.03] bg-white pointer-events-none mix-blend-overlay" />
 
                   <div className="relative z-10">
@@ -213,7 +167,6 @@ export const EventsSection = () => {
                       <CarouselContent className="-ml-4 pb-4">
                         {chunkEvents(cluster.events, 3).map((slide, index) => (
                           <CarouselItem key={index} className="pl-4 basis-[85%] md:basis-1/2 lg:basis-1/3">
-                            {/* Event Card Group */}
                             <div className="h-full bg-black/40 border border-white/10 rounded-2xl p-4 backdrop-blur-md flex flex-col gap-3 hover:border-primary/40 transition-colors">
                               {slide.map((event, idx) => (
                                 <motion.div 
@@ -229,7 +182,6 @@ export const EventsSection = () => {
                                       {event.name}
                                     </span>
                                   </div>
-                                  
                                   <Badge 
                                     variant="outline" 
                                     className="shrink-0 bg-black/40 border-white/10 text-[10px] uppercase tracking-wider text-white/60 px-2 py-1 h-7 flex items-center justify-center whitespace-nowrap"

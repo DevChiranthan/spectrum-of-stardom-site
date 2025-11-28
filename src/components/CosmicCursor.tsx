@@ -3,89 +3,63 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motio
 
 const IDLE_TIMEOUT = 700;
 
-const getInitialPosition = () =>
-  typeof window !== 'undefined'
-    ? { x: window.innerWidth / 2, y: window.innerHeight / 2 }
-    : { x: 0, y: 0 };
-
 export const CosmicCursor = () => {
   const [isActive, setIsActive] = useState(false);
-  // Initialize based on capability to avoid hydration mismatch, but assume mouse first
-  const [isTouchDevice, setIsTouchDevice] = useState(false); 
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const trailRef = useRef<{ x: number; y: number; id: number }[]>([]);
+  const [, setForceUpdate] = useState(0); // Trigger re-render for trail
+  
   const timeoutRef = useRef<number>();
-  const pos = useRef(getInitialPosition());
-
-  const x = useMotionValue(pos.current.x);
-  const y = useMotionValue(pos.current.y);
-  // Reduced stiffness slightly for better performance on lower-end devices
-  const smoothX = useSpring(x, { mass: 0.2, damping: 20, stiffness: 100 });
-  const smoothY = useSpring(y, { mass: 0.2, damping: 20, stiffness: 100 });
-
-  const scheduleIdle = () => {
-    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => setIsActive(false), IDLE_TIMEOUT);
-  };
-
-  const updatePosition = (clientX: number, clientY: number) => {
-    pos.current = { x: clientX, y: clientY };
-    x.set(clientX);
-    y.set(clientY);
-    // Limit trail updates to prevent memory churn
-    setTrail((prev) => [...prev.slice(-4), { x: clientX, y: clientY, id: Date.now() }]);
-    setIsActive(true);
-    scheduleIdle();
-  };
+  
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  // SMOOTHNESS: Adjusted spring physics for "butter" feel
+  const smoothOptions = { damping: 25, stiffness: 200, mass: 0.5 };
+  const smoothX = useSpring(x, smoothOptions);
+  const smoothY = useSpring(y, smoothOptions);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
     // Robust touch detection
     const checkDevice = () => {
       const isTouch = window.matchMedia('(pointer: coarse)').matches || 
                      ('ontouchstart' in window) || 
                      (navigator.maxTouchPoints > 0);
       setIsTouchDevice(isTouch);
-      
-      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-      setPrefersReducedMotion(mq.matches);
     };
-    
     checkDevice();
     window.addEventListener('resize', checkDevice);
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
 
   useEffect(() => {
-    // Immediately exit if on touch device to save event listener cost
-    if (isTouchDevice ||prefersReducedMotion) return;
+    if (isTouchDevice) return;
 
     const handlePointerMove = (e: PointerEvent) => {
-      if (e.pointerType === 'touch') return;
-      updatePosition(e.clientX, e.clientY);
+      x.set(e.clientX);
+      y.set(e.clientY);
+      
+      // OPTIMIZATION: Limit trail length strictly
+      trailRef.current = [
+        ...trailRef.current.slice(-3), // Keep only last 3 points
+        { x: e.clientX, y: e.clientY, id: Date.now() }
+      ];
+      
+      setIsActive(true);
+      setForceUpdate(prev => prev + 1);
+
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => setIsActive(false), IDLE_TIMEOUT);
     };
 
-    const handleScroll = () => {
-      if (!isActive) return;
-      scheduleIdle();
-    };
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('pointerdown', handlePointerMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
+    window.addEventListener('pointermove', handlePointerMove);
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerdown', handlePointerMove);
-      window.removeEventListener('scroll', handleScroll);
       if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
     };
-  }, [isTouchDevice, prefersReducedMotion, isActive]);
+  }, [isTouchDevice, x, y]);
 
-  if (isTouchDevice || prefersReducedMotion) {
-    return null;
-  }
+  if (isTouchDevice) return null;
 
   return (
     <AnimatePresence>
@@ -95,39 +69,29 @@ export const CosmicCursor = () => {
             className="fixed w-6 h-6 rounded-full pointer-events-none z-[9999] mix-blend-screen"
             style={{
               background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)',
-              left: smoothX.get() - 12,
-              top: smoothY.get() - 12,
+              left: smoothX,
+              top: smoothY,
+              translateX: '-50%',
+              translateY: '-50%',
             }}
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
           />
-
-          {trail.map((point) => (
+          {trailRef.current.map((point) => (
             <motion.div
               key={point.id}
               className="fixed w-1.5 h-1.5 rounded-full pointer-events-none z-[9998] mix-blend-screen"
               style={{
                 background: 'hsl(var(--secondary))',
-                left: point.x - 3,
-                top: point.y - 3,
+                left: point.x,
+                top: point.y,
               }}
-              initial={{ opacity: 0.6, scale: 1 }}
+              initial={{ opacity: 0.5, scale: 1 }}
               animate={{ opacity: 0, scale: 0 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.5 }}
             />
           ))}
-
-          <motion.div
-            className="fixed w-10 h-10 rounded-full border border-primary/40 pointer-events-none z-[9997]"
-            style={{
-              left: smoothX.get() - 20,
-              top: smoothY.get() - 20,
-            }}
-            animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0, 0.4] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            exit={{ opacity: 0 }}
-          />
         </>
       )}
     </AnimatePresence>

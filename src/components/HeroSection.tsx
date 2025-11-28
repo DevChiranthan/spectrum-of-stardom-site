@@ -1,7 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Stars } from '@react-three/drei';
 
 export const HeroSection = () => {
   const ref = useRef(null);
@@ -15,7 +13,7 @@ export const HeroSection = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={ref} className="relative h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-black">
+    <section ref={ref} className="relative h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden">
       {/* Import Cinzel Font */}
       <style>
         {`
@@ -24,32 +22,23 @@ export const HeroSection = () => {
         `}
       </style>
 
-      {/* --- Dynamic Starfield Background --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <Canvas dpr={[1, 1.5]}>
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        </Canvas>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/90" />
-      </div>
+      {/* NOTE: Starfield removed from here as it is now in CosmicBackground to save WebGL contexts */}
 
       {/* --- BACKGROUND COMPONENT: "COSMIC STARGATE" --- */}
-      {/* Replaces text with a massive, slow-rotating geometric halo system to give 'life' to the main logo */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-        {/* Outer Ring */}
+        {/* Rings - Using border radius instead of 3D geometry for performance */}
         <motion.div 
-          className="absolute w-[140vw] h-[140vw] sm:w-[50vw] sm:h-[50vw] border-[1px] border-white/5 rounded-full"
+          className="absolute w-[140vw] h-[140vw] sm:w-[50vw] sm:h-[50vw] border-[1px] border-white/5 rounded-full will-change-transform"
           animate={{ rotate: 360 }}
           transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
         />
-        {/* Middle Dashed Ring */}
         <motion.div 
-          className="absolute w-[110vw] h-[110vw] sm:w-[40vw] sm:h-[40vw] border-[2px] border-dashed border-white/10 rounded-full"
+          className="absolute w-[110vw] h-[110vw] sm:w-[40vw] sm:h-[40vw] border-[2px] border-dashed border-white/10 rounded-full will-change-transform"
           animate={{ rotate: -360 }}
           transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
         />
-        {/* Inner Glowing Ring */}
         <motion.div 
-          className="absolute w-[80vw] h-[80vw] sm:w-[30vw] sm:h-[30vw] border-[1px] border-primary/20 rounded-full shadow-[0_0_100px_rgba(255,20,147,0.1)]"
+          className="absolute w-[80vw] h-[80vw] sm:w-[30vw] sm:h-[30vw] border-[1px] border-primary/20 rounded-full shadow-[0_0_100px_rgba(255,20,147,0.1)] will-change-transform"
           animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -60,12 +49,9 @@ export const HeroSection = () => {
         style={{ y, opacity }}
         className="relative z-10 w-full h-full flex flex-col items-center justify-center py-2 will-change-transform"
       >
-        
-        {/* WRAPPER: All elements use absolute positioning to prevent pushing */}
         <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full">
           
-          {/* --- 2. Main Title: Ranvita Logo (THE HERO) --- */}
-          {/* BACKGROUND LAYER: Lower z-index so it sits behind text, only fills empty spaces */}
+          {/* --- Main Title: Ranvita Logo --- */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -77,7 +63,7 @@ export const HeroSection = () => {
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
                <motion.div 
-                 className="w-[100%] h-[100%] bg-gradient-to-r from-primary/30 via-purple-600/20 to-secondary/30 rounded-full blur-[60px] sm:blur-[100px]"
+                 className="w-[100%] h-[100%] bg-gradient-to-r from-primary/30 via-purple-600/20 to-secondary/30 rounded-full blur-[60px] sm:blur-[100px] will-change-transform"
                  animate={{ 
                    scale: [1, 1.2, 1],
                    opacity: [0.4, 0.7, 0.4],
@@ -87,18 +73,19 @@ export const HeroSection = () => {
                />
             </motion.div>
             
-            {/* The Logo Image - Massive on PC, covers left and right, behind text */}
+            {/* Optimized WebP Image */}
             <motion.img 
-              src="/ranvita-logo.png" 
+              src="/ranvita-logo.webp" 
               alt="RANVITA 2026"
-              className="w-[95vw] sm:w-[98vw] md:w-[100vw] lg:w-[100vw] xl:w-[100vw] max-w-none h-auto max-h-[55vh] md:max-h-[80vh] lg:max-h-[85vh] object-contain object-center drop-shadow-[0_0_50px_rgba(255,20,147,0.4)]"
+              width="800"
+              height="400"
+              className="w-[95vw] sm:w-[98vw] md:w-[100vw] lg:w-[100vw] xl:w-[100vw] max-w-none h-auto max-h-[55vh] md:max-h-[80vh] lg:max-h-[85vh] object-contain object-center drop-shadow-[0_0_50px_rgba(255,20,147,0.4)] will-change-transform"
               animate={{ y: [-5, 5, -5] }} 
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             />
           </motion.div>
 
-          {/* --- 1. CMR University Logo --- */}
-          {/* VISIBILITY: Moved up to top-8% on PC to give more room to center logo */}
+          {/* --- CMR University Logo --- */}
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -106,14 +93,15 @@ export const HeroSection = () => {
             className="absolute z-50 pointer-events-none top-[calc(50%-22vh)] sm:top-[calc(50%-25vh)] md:top-[8%]"
           >
             <img 
-              src="/cmr-logo.png" 
+              src="/cmr-logo.webp" 
               alt="CMR University" 
+              width="200"
+              height="80"
               className="h-32 sm:h-40 md:h-52 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]"
             />
           </motion.div>
 
-          {/* --- 3. Subtitle --- */}
-          {/* POSITION FIX: Brought down significantly on PC (bottom-[calc(5%+90px)]) to clear the logo overlap */}
+          {/* --- Subtitle --- */}
           <motion.div 
             className="absolute z-40 text-center space-y-2 w-full px-4 bottom-[calc(10%+60px)] sm:bottom-[calc(10%+80px)] md:bottom-[calc(5%+90px)]"
             initial={{ opacity: 0, y: 20 }}
@@ -129,8 +117,7 @@ export const HeroSection = () => {
 
         </div>
 
-        {/* --- 4. CTA Button --- */}
-        {/* Lowered to bottom-5% on PC to prevent crowding */}
+        {/* --- CTA Button --- */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -139,7 +126,7 @@ export const HeroSection = () => {
         >
           <button 
             onClick={() => document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group relative px-10 py-3 sm:px-14 sm:py-4 bg-black/40 backdrop-blur-md overflow-hidden rounded-full border border-white/20 transition-all hover:border-primary/60 hover:shadow-[0_0_40px_rgba(255,20,147,0.5)]"
+            className="group relative px-10 py-3 sm:px-14 sm:py-4 bg-black/40 backdrop-blur-md overflow-hidden rounded-full border border-white/20 transition-all hover:border-primary/60 hover:shadow-[0_0_40px_rgba(255,20,147,0.5)] cursor-pointer"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-secondary/30 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300" />
             <span className="relative font-bold font-luxury uppercase tracking-[0.2em] text-xs sm:text-sm text-white group-hover:text-white transition-colors">
@@ -151,7 +138,7 @@ export const HeroSection = () => {
       </motion.div>
 
       {/* --- BOTTOM GRADIENT --- */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050508] via-[#050508]/80 to-transparent pointer-events-none z-20" />
     </section>
   );
 };

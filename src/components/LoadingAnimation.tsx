@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 function ConcentricCircles() {
@@ -17,7 +15,8 @@ function ConcentricCircles() {
     }
   });
 
-  const circles = [1.2, 1.6, 2.0, 2.4, 2.8];
+  // OPTIMIZATION: Memoize geometry args
+  const circles = useMemo(() => [1.2, 1.6, 2.0, 2.4, 2.8], []);
 
   return (
     <group ref={groupRef}>
@@ -33,7 +32,6 @@ function ConcentricCircles() {
           />
         </mesh>
       ))}
-      {/* Central glowing sphere */}
       <mesh>
         <sphereGeometry args={[0.3, 32, 32]} />
         <meshStandardMaterial
@@ -53,7 +51,6 @@ export const LoadingAnimation = () => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -68,7 +65,8 @@ export const LoadingAnimation = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="w-full h-full">
-        <Canvas camera={{ position: [0, 0, 6], fov: 75 }}>
+        {/* OPTIMIZATION: Disable antialias for loader to speed up initial paint */}
+        <Canvas camera={{ position: [0, 0, 6], fov: 75 }} gl={{ antialias: false }}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1} />
           <ConcentricCircles />

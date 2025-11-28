@@ -91,7 +91,6 @@ export const RegisterSection = () => {
                   {/* Button Hover Fill Effect */}
                   <div className="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left z-0" />
                   <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    Launch Registration <ArrowUpRight className="w-5 h-5" />
                   </span>
                 </motion.a>
 

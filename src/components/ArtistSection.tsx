@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Calendar, Music, MapPin, Sparkles, Star } from 'lucide-react';
+import { Calendar, Music, MapPin, Star, Sparkles } from 'lucide-react';
 
 export const ArtistSection = () => {
   const containerRef = useRef(null);
@@ -76,11 +76,11 @@ export const ArtistSection = () => {
         <div className="absolute inset-0 z-0 h-full w-full">
           <motion.div 
             style={{ x: bgX_Day1, scale: 1.1 }} 
-            className="absolute inset-0 w-[120%] h-full -left-[10%]"
+            className="absolute inset-0 w-[120%] h-full -left-[10%] will-change-transform"
           >
             <div className="absolute inset-0 bg-[#050508] z-[-1]" />
             <img 
-              src="/rubz-bg.jpg" 
+              src="/rubz-bg.webp" 
               alt="Background" 
               className="w-full h-full object-cover opacity-60 grayscale mix-blend-luminosity"
             />
@@ -99,13 +99,13 @@ export const ArtistSection = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
             variants={imageReveal}
-            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-start order-2 md:order-1 w-full -mb-10 md:mb-0"
+            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-start order-2 md:order-1 w-full -mb-10 md:mb-0 will-change-transform"
           >
             {/* Glow */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150%] h-[60%] bg-pink-600/30 blur-[100px] rounded-full z-0 mix-blend-screen" />
             
             <img 
-              src="/dj-rubz.png"
+              src="/dj-rubz.webp"
               alt="DJ Rubz" 
               className="relative z-10 w-full h-full object-contain object-bottom drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)]"
               style={{
@@ -182,11 +182,11 @@ export const ArtistSection = () => {
         <div className="absolute inset-0 z-0 h-full w-full">
           <motion.div 
             style={{ x: bgX_Day2, scale: 1.1 }} 
-            className="absolute inset-0 w-[120%] h-full -left-[10%]"
+            className="absolute inset-0 w-[120%] h-full -left-[10%] will-change-transform"
           >
             <div className="absolute inset-0 bg-[#050508] z-[-1]" />
             <img 
-              src="/thamarasserry-bg.jpg" 
+              src="/thamarasserry-bg.webp" 
               alt="Background" 
               className="w-full h-full object-cover opacity-60 grayscale mix-blend-luminosity"
             />
@@ -249,12 +249,12 @@ export const ArtistSection = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
             variants={imageReveal}
-            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-end order-2 w-full -mb-10 md:mb-0"
+            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-end order-2 w-full -mb-10 md:mb-0 will-change-transform"
           >
             <div className="absolute bottom-0 right-1/2 md:right-1/4 translate-x-1/2 md:translate-x-0 w-[150%] h-[60%] bg-cyan-600/25 blur-[100px] rounded-full z-0 mix-blend-screen" />
 
             <img 
-              src="/thamarasserry.png" 
+              src="/thamarasserry.webp" 
               alt="Thamarasserry Churam" 
               className="relative z-10 w-full h-full object-contain object-bottom drop-shadow-[0_30px_60px_rgba(0,0,0,0.9)]"
               style={{
