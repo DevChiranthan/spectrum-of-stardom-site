@@ -16,7 +16,8 @@ const VideoSection = lazy(() => import('@/components/VideoSection').then(m => ({
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen bg-[#050508]">
+    // FIX: Changed bg-[#050508] to bg-transparent (or removed it) to reveal CosmicBackground
+    <div className="relative min-h-screen bg-transparent text-foreground overflow-x-hidden">
       <WarpTransition />
       <CosmicCursor />
       <CosmicBackground />
