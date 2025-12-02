@@ -111,7 +111,7 @@ export const AboutSection = () => {
                     Office of Student Affairs (OSA)
                   </h4>
                   <p className="text-sm text-gray-300 leading-relaxed">
-                    Guided by Dr. Tristha Ramamurthy’s vision, OSA is the central hub that amplifies student life. We provide strategic mentoring for student councils, design cultural weeks, and bridge the gap between student ideas and university leadership.
+                    Guided by our Provost Dr. Tristha Ramamurthy’s vision, OSA is the central hub that amplifies student life. We provide strategic mentoring for student councils, design cultural weeks, and bridge the gap between student ideas and university leadership.
                   </p>
                 </div>
 
