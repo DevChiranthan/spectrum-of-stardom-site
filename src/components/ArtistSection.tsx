@@ -156,7 +156,7 @@ export const ArtistSection = () => {
                 </span>
                 <span className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-pink-500" /> 
-                  Main Auditorium • 6:30 PM
+                  Main Stage •4:30 PM
                 </span>
               </motion.div>
             </motion.div>
