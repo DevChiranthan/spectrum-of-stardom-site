@@ -4,88 +4,113 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ShieldCheck, Sparkles, Navigation } from 'lucide-react';
 
 const supportTracks = [
-  { title: 'Student councils & clubs', detail: 'Strategic mentoring for flagship initiatives and inter-college collabs.' },
-  { title: 'Signature events & workshops', detail: 'Co-design of cultural weeks, talent labs, and wellness pop-ups.' },
-  { title: 'Leadership guidance', detail: 'Roadmaps for student-led campaigns, fellowships, and social impact drives.' },
-  { title: 'Inclusive campus culture', detail: 'Support systems that keep every venue safe, vibrant, and welcoming.' },
-  { title: 'Admin bridge', detail: 'A direct line between students and the University leadership team.' },
+  { 
+    title: 'Counselling Services', 
+    detail: 'Providing a supportive environment for mental health, personal growth, and student wellbeing.' 
+  },
+  { 
+    title: 'Student Leadership Development', 
+    detail: 'Guiding student councils, clubs, and ambassador programs to enhance the overall student experience.' 
+  },
+  { 
+    title: 'Cultural & Sports Initiatives', 
+    detail: 'Coordinating major university events and activities to create a vibrant campus atmosphere.' 
+  },
+  { 
+    title: 'Grievance Redressal', 
+    detail: 'Ensuring that every student feels heard and supported through transparent resolution channels.' 
+  },
+  { 
+    title: 'Community Building', 
+    detail: 'Fostering engagement between students, faculty, and leadership to strengthen campus unity.' 
+  },
 ];
 
 export const OsaSection = () => {
   return (
-    <section className="py-10 sm:py-16 md:py-20 px-4">
+    <section className="py-12 sm:py-16 md:py-24 px-4 overflow-hidden">
       <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-70px' }}
-          transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
-          className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]"
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7 }}
+          className="grid gap-6 md:gap-8 lg:grid-cols-[1.05fr_0.95fr]"
         >
-          <div className="rounded-3xl border border-secondary/40 bg-gradient-to-br from-secondary/15 via-card/50 to-background/60 p-6 sm:p-10 backdrop-blur-2xl">
-            <div className="flex items-center gap-3 text-secondary">
-              <ShieldCheck className="h-6 w-6" />
-              <p className="uppercase tracking-[0.4em] text-xs text-secondary/80">About OSA Committee</p>
+          
+          {/* LEFT COLUMN: Overview */}
+          <div className="relative rounded-[2rem] border border-secondary/30 bg-gradient-to-br from-secondary/10 via-card/50 to-background/60 p-5 sm:p-8 md:p-10 backdrop-blur-xl">
+            {/* Mobile-friendly Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-secondary mb-4">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6" />
+                <p className="uppercase tracking-[0.2em] text-[10px] sm:text-xs text-secondary/80 font-bold">About OSA Committee</p>
+              </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gradient-aurora mt-4">
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient-aurora leading-tight">
               Office of Student Affairs (OSA)
             </h2>
+            
             <p className="text-sm sm:text-base text-foreground/80 mt-4 leading-relaxed">
-              Guided by Dr. Tristha Ramamurthy’s vision, OSA is the central hub that amplifies student life at CMR
-              University—keeping creativity, collaboration, and accountability in perfect orbit.
+              The Office of Student Affairs (OSA) at CMR University is dedicated to fostering student growth, wellbeing, and engagement across all campuses. We work closely with students, faculty, and leadership to create a supportive and vibrant campus environment.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              {['Student engagement', 'Leadership labs', 'Community building'].map((pill) => (
-                <Badge key={pill} variant="secondary" className="bg-secondary/20 text-secondary border-secondary/40">
+            {/* Badges: Wrapped for mobile */}
+            <div className="mt-6 flex flex-wrap gap-2 sm:gap-3">
+              {['Student Wellbeing', 'Holistic Development', 'Active Engagement'].map((pill) => (
+                <Badge key={pill} variant="secondary" className="bg-secondary/15 text-secondary border-secondary/30 px-3 py-1 text-xs sm:text-sm whitespace-nowrap">
                   {pill}
                 </Badge>
               ))}
             </div>
 
-            <div className="mt-8 rounded-2xl border border-border/40 bg-background/50 p-5 space-y-4">
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            {/* Mission Snapshot: Compact on mobile */}
+            <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 sm:p-6">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span className="font-semibold text-foreground">Mission Snapshot</span>
               </div>
-              <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">
-                Empower every student to discover strengths, test bold ideas, and champion inclusive celebrations that
-                ripple beyond campus.
+              <p className="text-sm text-foreground/90 leading-relaxed italic">
+                &quot;OSA ensures that every student feels heard, supported, and empowered to participate actively in campus life.&quot;
               </p>
             </div>
           </div>
 
+          {/* RIGHT COLUMN: Action Items */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="rounded-3xl border border-border/60 bg-card/60 backdrop-blur-md p-6 sm:p-8"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="rounded-[2rem] border border-border/50 bg-card/40 backdrop-blur-md p-5 sm:p-8"
           >
-            <div className="flex items-center gap-3 text-accent">
+            <div className="flex items-center gap-3 text-accent mb-2">
               <Navigation className="h-5 w-5" />
-              <p className="uppercase tracking-[0.35em] text-xs text-muted-foreground">What OSA does</p>
+              <p className="uppercase tracking-[0.2em] text-[10px] sm:text-xs text-muted-foreground font-bold">What OSA does</p>
             </div>
-            <Accordion type="single" collapsible className="mt-4 divide-border/40">
+            
+            {/* Accordion: Enhanced touch targets for mobile */}
+            <Accordion type="single" collapsible className="mt-2 divide-y divide-white/5">
               {supportTracks.map((track, index) => (
-                <AccordionItem key={track.title} value={`track-${index}`}>
-                  <AccordionTrigger className="text-left text-sm sm:text-base text-foreground">
+                <AccordionItem key={track.title} value={`track-${index}`} className="border-b-0">
+                  <AccordionTrigger className="text-left text-sm sm:text-base font-medium text-foreground py-4 hover:text-primary transition-colors">
                     {track.title}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground">
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
                     {track.detail}
                   </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
-            <p className="text-xs text-muted-foreground mt-6">
-              OSA partners with councils, clubs, and societies to keep every Ranvita rehearsal, registration, and reveal
-              running seamlessly.
+
+            <p className="text-xs text-muted-foreground mt-4 pt-4 border-t border-white/5">
+              Acting as the bridge for student ideas and participation.
             </p>
           </motion.div>
+
         </motion.div>
       </div>
     </section>
   );
 };
-

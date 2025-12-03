@@ -1,133 +1,182 @@
 import { motion } from 'framer-motion';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Sparkles, ArrowRight, BookOpen, Trophy, Users, GraduationCap, Lightbulb, Globe } from 'lucide-react';
+import { 
+  Target, 
+  MapPin, 
+  Quote,
+  ArrowUpRight,
+  BookOpen,
+  Users,
+  Globe,
+  Zap
+} from 'lucide-react';
 
-const stats = [
-  { 
-    icon: BookOpen,
-    value: '12+', 
-    label: 'Schools', 
-    sub: 'Tech, Law, Design & Arts' 
-  },
-  { 
-    icon: Users,
-    value: '80+', 
-    label: 'Alliances', 
-    sub: 'Industry Partners' 
-  },
-  { 
-    icon: Trophy,
-    value: '30+', 
-    label: 'Fests', 
-    sub: 'Annual Showcases' 
-  },
+const disciplines = [
+  "Architecture", "Design", "Engineering", "Law", "Management", 
+  "Economics", "Commerce", "Social Sciences", "Humanities", "Science Studies"
 ];
+
+const gridContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const gridItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: "spring", stiffness: 100 } 
+  }
+};
 
 export const AboutSection = () => {
   return (
-    <section id="about" className="py-24 px-4 relative z-10">
-      {/* Smooth fade-in from HeroSection */}
-      <div className="absolute top-0 left-0 right-0 h-32 md:h-48 bg-gradient-to-b from-[#050508] to-transparent pointer-events-none -z-10" />
-      <div className="container mx-auto max-w-6xl">
+    <section id="about" className="relative py-20 px-6 overflow-hidden bg-[#050508]">
+      
+      {/* 1. Ambient Background Glows */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-purple-900/20 blur-[120px] rounded-full mix-blend-screen" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 blur-[100px] rounded-full mix-blend-screen" />
+      </div>
+
+      <div className="container mx-auto max-w-7xl relative z-10">
         
-        {/* Header Section */}
+        {/* 2. Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          viewport={{ once: true }}
+          // Reduced bottom margin on desktop to fix top blank space
+          className="mb-16 md:mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-xs uppercase tracking-widest mb-4">
-            <Sparkles className="w-3 h-3" />
-            Our Origins
+          <div className="flex items-center gap-3 mb-6">
+            <span className="h-px w-12 bg-gradient-to-r from-transparent to-primary/50" />
+            <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase">Who We Are</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            About CMR University
+          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight">
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">CMR University</span>
           </h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Established in 2016, we are Bangalore’s <span className="text-white font-semibold">creative-tech playground</span> where design thinkers, coders, and storytellers co-build experiential learning.
+          <p className="mt-6 text-xl text-gray-400 max-w-2xl font-light">
+             Fostering creative communities where new ideas are nurtured, discoveries are made, and creations are shared.
           </p>
         </motion.div>
 
-        {/* Stats Grid - Flexible Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="relative group p-8 rounded-[2rem] border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/30 transition-all duration-500 flex flex-col items-center text-center shadow-lg hover:shadow-primary/10"
-            >
-              <div className="absolute top-4 right-4 p-2 opacity-20 group-hover:opacity-40 transition-opacity">
-                <stat.icon className="w-10 h-10 text-white" />
-              </div>
-              <div className="relative z-10 w-full">
-                <div className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4">
-                  {stat.value}
-                </div>
-                <div className="text-sm font-bold text-primary uppercase tracking-widest mb-2">
-                  {stat.label}
-                </div>
-                <div className="text-sm text-gray-400 font-light">
-                  {stat.sub}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom CTA with Expanded Content */}
-        <div className="text-center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="group inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-primary transition-colors cursor-pointer px-6 py-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10">
-                <span className="border-b border-white/30 group-hover:border-primary transition-all">Deep Dive into our Ethos</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="bg-[#0a0a0f] border-white/10 text-white sm:max-w-2xl max-h-[80vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-3xl mb-2 font-bold text-gradient-aurora">The CMRU Experience</DialogTitle>
-                <DialogDescription className="text-gray-400 text-base">
-                  More than just a university, we are a movement of makers and leaders.
-                </DialogDescription>
-              </DialogHeader>
+        {/* 3. Main Layout Grid - Added items-stretch for equal height */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-stretch">
+          
+          {/* LEFT COLUMN: The Narrative */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            // Added justify-center to center content vertically in the stretched column
+            className="lg:col-span-5 flex flex-col gap-8 order-1 justify-center"
+          >
+            <div className="prose prose-lg prose-invert text-gray-400">
+              <p className="text-lg text-gray-300 leading-relaxed">
+                CMR University (CMRU), Bangalore, is a private university in the state of Karnataka, established to equip students with the skills required to pursue successful careers in their chosen fields of study.
+              </p>
               
-              <div className="space-y-6 mt-4">
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                  <h4 className="flex items-center gap-2 text-lg font-semibold text-white mb-2">
-                    <GraduationCap className="w-5 h-5 text-primary" />
-                    Academic Excellence
-                  </h4>
-                  <p className="text-sm text-gray-300 leading-relaxed">
-                    We blend rigorous academics with studio-style learning. Faculty mentors pair with students inside innovation labs, creative pods, and incubation cells to accelerate ideas into prototypes.
-                  </p>
+              <div className="h-px w-full bg-white/10 my-6" />
+              
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-full bg-white/5 border border-white/10 shrink-0">
+                  <MapPin className="w-5 h-5 text-white" />
                 </div>
-
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                  <h4 className="flex items-center gap-2 text-lg font-semibold text-white mb-2">
-                    <Lightbulb className="w-5 h-5 text-secondary" />
-                    Office of Student Affairs (OSA)
-                  </h4>
-                  <p className="text-sm text-gray-300 leading-relaxed">
-                    Guided by Dr. Tristha Ramamurthy’s vision, OSA is the central hub that amplifies student life. We provide strategic mentoring for student councils, design cultural weeks, and bridge the gap between student ideas and university leadership.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                  <h4 className="flex items-center gap-2 text-lg font-semibold text-white mb-2">
-                    <Globe className="w-5 h-5 text-accent" />
-                    Community Impact
-                  </h4>
-                  <p className="text-sm text-gray-300 leading-relaxed">
-                    Our leadership pods prepare council teams for mega events like Ranvita. We partner with city studios, galleries, and tech hubs to ensure our students aren't just learning in classrooms, but contributing to the city's culture.
+                <div>
+                  <h4 className="text-white font-semibold mb-1">Rooted in Karnataka</h4>
+                  <p className="text-sm text-gray-500">
+                    A hub for innovation and heritage.
                   </p>
                 </div>
               </div>
-            </DialogContent>
-          </Dialog>
+            </div>
+          </motion.div>
+
+          {/* RIGHT COLUMN: The Vision (Highlight) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            // Added h-full to ensure it fills the stretched height
+            className="lg:col-span-7 order-2 h-full"
+          >
+            {/* Added h-full and justify-center to center the quote inside the box */}
+            <div className="relative h-full flex flex-col justify-center p-8 md:p-12 rounded-3xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 overflow-hidden group">
+              {/* Decorative Quote Icon */}
+              <Quote className="absolute top-6 right-8 w-24 h-24 text-white/5 rotate-12" />
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 text-accent mb-6">
+                  <Target className="w-5 h-5" />
+                  <span className="uppercase tracking-widest text-xs font-bold">Our Vision</span>
+                </div>
+                <blockquote className="text-2xl md:text-3xl lg:text-4xl font-medium text-white leading-snug">
+                  &quot;To nurture creative thinkers who will drive positive global change.&quot;
+                </blockquote>
+                
+                <div className="mt-8 flex items-center gap-4">
+                  <div className="flex -space-x-3">
+                    <div className="w-10 h-10 rounded-full border-2 border-[#050508] bg-blue-500/20 flex items-center justify-center backdrop-blur-sm">
+                      <Users className="w-4 h-4 text-blue-200" />
+                    </div>
+                    <div className="w-10 h-10 rounded-full border-2 border-[#050508] bg-purple-500/20 flex items-center justify-center backdrop-blur-sm">
+                      <Globe className="w-4 h-4 text-purple-200" />
+                    </div>
+                    <div className="w-10 h-10 rounded-full border-2 border-[#050508] bg-pink-500/20 flex items-center justify-center backdrop-blur-sm">
+                      <Zap className="w-4 h-4 text-pink-200" />
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-400 font-medium">+ diverse community</span>
+                </div>
+              </div>
+
+              {/* Hover Effect */}
+              <div className="absolute inset-0 bg-primary/20 blur-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-700" />
+            </div>
+          </motion.div>
         </div>
+
+        {/* 4. DISCIPLINES SECTION */}
+        <motion.div 
+          className="mt-24"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={gridContainerVariants}
+        >
+          <div className="flex items-end justify-between mb-10 border-b border-white/10 pb-6">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+                <BookOpen className="w-6 h-6 text-primary" />
+                Academic Disciplines
+              </h3>
+              <p className="text-gray-400 text-sm max-w-md">
+                Advancement of education across diverse schools of study.
+              </p>
+            </div>
+            <ArrowUpRight className="hidden md:block w-8 h-8 text-gray-600" />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+            {disciplines.map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={gridItemVariants}
+                whileHover={{ scale: 1.02, y: -2 }}
+                className="group relative flex items-center justify-center p-4 h-20 rounded-2xl bg-[#0F0F16] border border-white/10 hover:border-primary/50 transition-all cursor-pointer overflow-hidden"
+              >
+                <span className="relative z-10 text-sm md:text-base font-medium text-gray-300 group-hover:text-white transition-colors text-center">
+                  {item}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
 
       </div>
     </section>

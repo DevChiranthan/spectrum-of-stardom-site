@@ -1,38 +1,40 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Calendar, Music, MapPin, Star, Sparkles } from 'lucide-react';
+import { Calendar, Music, MapPin, Star, Sparkles, Clock } from 'lucide-react';
 
 export const ArtistSection = () => {
   const containerRef = useRef(null);
+  
+  // Optimized Scroll Hook
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
   // Smooth physics for the background strip movement
-  const springConfig = { stiffness: 50, damping: 20, restDelta: 0.001 };
+  const springConfig = { stiffness: 40, damping: 25, restDelta: 0.001 };
   
-  // Background Strip Horizontal Move
+  // Background Strip Horizontal Move - gentler parallax
   const bgX_Day1 = useSpring(useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]), springConfig);
   const bgX_Day2 = useSpring(useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]), springConfig);
 
-  // Animation Variants for "Smart" Entry
+  // Animation Variants
   const imageReveal = {
-    hidden: { opacity: 0, scale: 1.15, y: 50 },
+    hidden: { opacity: 0, scale: 1.1, y: 40 },
     visible: { 
       opacity: 1, 
       scale: 1, 
       y: 0,
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } // Custom Bezier for "luxurious" feel
+      transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
   const textStagger = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.6, ease: "easeOut" }
     }
   };
 
@@ -62,13 +64,13 @@ export const ArtistSection = () => {
           </motion.h2>
           
           <motion.p variants={textStagger} className="text-gray-400 max-w-lg mx-auto text-lg font-light leading-relaxed">
-            Witness the galaxy's finest performers descend upon our stage.
+            Witness the galaxy's finest performers descend upon the Supernova stage.
           </motion.p>
         </motion.div>
       </div>
 
       {/* ========================================================
-          DAY 01: DJ RUBZ (Aurora)
+          ARTIST 01: DJ RUBZ
          ======================================================== */}
       <div className="relative w-full min-h-[95vh] md:min-h-[110vh] flex items-end md:items-center overflow-hidden group pb-0 md:pb-10">
         
@@ -93,13 +95,12 @@ export const ArtistSection = () => {
         <div className="container mx-auto relative z-20 px-4 h-full grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8 items-center">
           
           {/* --- Artist Image (Mobile: Bottom, Desktop: Left) --- */}
-          {/* Increased Height for Impact */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
             variants={imageReveal}
-            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-start order-2 md:order-1 w-full -mb-10 md:mb-0 will-change-transform"
+            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-start order-2 md:order-1 w-full -mb-10 md:mb-0"
           >
             {/* Glow */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150%] h-[60%] bg-pink-600/30 blur-[100px] rounded-full z-0 mix-blend-screen" />
@@ -123,14 +124,14 @@ export const ArtistSection = () => {
               viewport={{ once: true }}
               transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
             >
+              {/* UPDATED: Day 2 Tag */}
               <motion.div variants={textStagger} className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-pink-500/30 bg-pink-950/40 backdrop-blur-xl mb-6 md:mb-8 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
                 <Calendar className="w-4 h-4 text-pink-400" />
                 <div className="h-4 w-px bg-pink-500/30" />
-                <span className="text-pink-100 font-bold uppercase tracking-[0.2em] text-xs">Day 01 • Aurora</span>
+                <span className="text-pink-100 font-bold uppercase tracking-[0.2em] text-xs">Day 02 • Supernova</span>
               </motion.div>
 
               <div className="relative">
-                {/* Ghost Text */}
                 <h2 className="hidden md:block absolute -top-20 -right-20 text-[12rem] font-black text-white/5 leading-none select-none pointer-events-none tracking-tighter mix-blend-overlay">
                   RUBZ
                 </h2>
@@ -149,14 +150,19 @@ export const ArtistSection = () => {
                 "The beat drop that shakes <br className="hidden md:block"/> <span className="text-pink-400">the galaxy</span>."
               </motion.p>
 
+              {/* UPDATED: Time and Location */}
               <motion.div variants={textStagger} className="flex flex-col gap-4 text-sm md:text-base text-gray-400 font-mono tracking-widest items-center md:items-end md:border-r-2 md:border-pink-500/50 md:pr-6">
                 <span className="flex items-center gap-3">
                   <Music className="w-5 h-5 text-pink-500" /> 
                   Electronic Dance Music
                 </span>
                 <span className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-pink-500" /> 
+                  4:30 PM - 5:30 PM
+                </span>
+                <span className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-pink-500" /> 
-                  Main Auditorium • 6:30 PM
+                  Main Stage
                 </span>
               </motion.div>
             </motion.div>
@@ -174,7 +180,7 @@ export const ArtistSection = () => {
       </div>
 
       {/* ========================================================
-          DAY 02: THAMARASSERRY CHURAM (Supernova)
+          ARTIST 02: THAMARASSERRY CHURAM
          ======================================================== */}
       <div className="relative w-full min-h-[95vh] md:min-h-[110vh] flex items-end md:items-center overflow-hidden border-t border-white/5 py-0 md:py-10">
         
@@ -206,6 +212,7 @@ export const ArtistSection = () => {
               viewport={{ once: true }}
               transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
             >
+              {/* Day 2 Tag - Kept Cyan for distinction */}
               <motion.div variants={textStagger} className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-cyan-500/30 bg-cyan-950/40 backdrop-blur-xl mb-6 md:mb-8 shadow-[0_0_30px_rgba(6,182,212,0.15)]">
                 <Sparkles className="w-4 h-4 text-cyan-400" />
                 <div className="h-4 w-px bg-cyan-500/30" />
@@ -230,14 +237,19 @@ export const ArtistSection = () => {
                 "Soulful rhythms & <br className="hidden md:block"/> <span className="text-cyan-400">electric vibes</span>."
               </motion.p>
 
+              {/* UPDATED: Time and Location */}
               <motion.div variants={textStagger} className="flex flex-col gap-4 text-sm md:text-base text-gray-400 font-mono tracking-widest items-center md:items-start md:border-l-2 md:border-cyan-500/50 md:pl-6">
                 <span className="flex items-center gap-3">
                   <Music className="w-5 h-5 text-cyan-500" /> 
                   Live Rock Band
                 </span>
                 <span className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-cyan-500" /> 
+                  6:00 PM - 7:30 PM
+                </span>
+                <span className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-cyan-500" /> 
-                  Main Arena • 7:00 PM
+                  Main Stage
                 </span>
               </motion.div>
             </motion.div>
@@ -249,7 +261,7 @@ export const ArtistSection = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
             variants={imageReveal}
-            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-end order-2 w-full -mb-10 md:mb-0 will-change-transform"
+            className="relative h-[65vh] md:h-[110vh] col-span-1 md:col-span-7 flex items-end justify-center md:justify-end order-2 w-full -mb-10 md:mb-0"
           >
             <div className="absolute bottom-0 right-1/2 md:right-1/4 translate-x-1/2 md:translate-x-0 w-[150%] h-[60%] bg-cyan-600/25 blur-[100px] rounded-full z-0 mix-blend-screen" />
 
